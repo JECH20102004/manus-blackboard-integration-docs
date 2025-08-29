@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de Integración de Manus AI en Blackboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h1, h2, h3 { color: #0056b3; }
+        pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        code { font-family: 'Courier New', Courier, monospace; }
+        ul { list-style-type: disc; margin-left: 20px; }
+        b { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Documentación de Integración de Manus AI en Blackboard</h1>
+        <p>Este documento proporciona la información necesaria y una guía para integrar Manus AI con Blackboard utilizando el estándar LTI 1.3.</p>
+
+        <h2>1. Requisitos Previos</h2>
+        <p>Para una integración exitosa, asegúrese de tener lo siguiente:</p>
+        <ul>
+            <li>Acceso de administrador a su instancia de Blackboard Learn.</li>
+            <li>Una cuenta de desarrollador de Blackboard para registrar la aplicación LTI.</li>
+            <li>Una clave API de Manus AI (solicite acceso en el sitio web de Manus AI).</li>
+            <li>Conocimiento básico de la configuración LTI 1.3.</li>
+        </ul>
+
+        <h2>2. Datos de Configuración de Manus AI</h2>
+        <p>Para la integración, necesitará la siguiente información de Manus AI:</p>
+        <ul>
+            <li><b>Clave API de Manus AI:</b> <code>YOUR_MANUS_KEY</code> (Obtenida a través del proceso de solicitud de acceso en el sitio web de Manus AI).</li>
+            <li><b>URL de Inicio de Sesión (Login URL):</b> (Esta URL será proporcionada por Manus AI para la integración LTI. Si no está disponible, se debe consultar con el soporte de Manus AI).</li>
+            <li><b>URL(s) de Redirección de Herramientas (Tool Redirect URL(s)):</b> (Estas URLs también serán proporcionadas por Manus AI y son necesarias para el flujo de autenticación LTI).</li>
+            <li><b>URL de la herramienta JWKS (JWKS Tool URL):</b> (Esta URL es para el acceso a la clave pública de la herramienta y es crucial para la verificación de la firma LTI 1.3. Debe ser proporcionada por Manus AI).</li>
+        </ul>
+        <p><b>Nota:</b> La documentación de la API de Manus AI (<a href="https://manus-ai.com/api-docs">https://manus-ai.com/api-docs</a>) proporciona detalles sobre cómo interactuar con la API para funcionalidades avanzadas, pero para la integración LTI con Blackboard, las URLs específicas de LTI (Inicio de Sesión, Redirección, JWKS) son primordiales y deben ser obtenidas directamente de Manus AI.</p>
+
+        <h2>3. Configuración de LTI 1.3 en Blackboard</h2>
+        <p>Siga estos pasos para registrar Manus AI como una nueva aplicación LTI 1.3 en su instancia de Blackboard:</p>
+        <ol>
+            <li><b>Acceda al Panel de Administrador de Blackboard:</b> Inicie sesión en su cuenta de administrador de Blackboard Learn.</li>
+            <li><b>Navegue a Proveedores de Herramientas LTI:</b> En el Panel de Administrador, bajo la sección 'Integración', seleccione 'Proveedores de Herramientas LTI'.</li>
+            <li><b>Registre una nueva herramienta LTI 1.3/Advantage:</b> Haga clic en 'Registrar Herramienta LTI 1.3/Advantage'.</li>
+            <li><b>Complete el Formulario de Registro de la Aplicación:</b> Utilice la siguiente información para rellenar los campos del formulario (referencia a la imagen proporcionada por el usuario):
+                <ul>
+                    <li><b>Nombre de la aplicación:</b> <code>Manus IA</code></li>
+                    <li><b>Descripción:</b> <code>Integración de Manus IA para mejorar la experiencia de aprendizaje con capacidades de IA avanzadas.</code> (Puede personalizar esta descripción).</li>
+                    <li><b>Dominio(s):</b> Ingrese los dominios proporcionados por Manus AI. Estos son los dominios desde los cuales se originarán las solicitudes LTI. Separe múltiples dominios con comas.</li>
+                    <li><b>Mi integración es compatible con LTI 1.3:</b> Asegúrese de que este interruptor esté activado.</li>
+                    <li><b>URL de inicio de sesión:</b> Ingrese la URL de inicio de sesión proporcionada por Manus AI.</li>
+                    <li><b>URL(s) de redirección de herramientas:</b> Ingrese las URL(s) de redirección proporcionadas por Manus AI. Separe múltiples URLs con comas.</li>
+                    <li><b>URL de la herramienta JWKS:</b> Ingrese la URL de la herramienta JWKS proporcionada por Manus AI. Esta URL es crucial para la validación de la firma.</li>
+                    <li><b>Algoritmo de firma:</b> Seleccione <code>RS256</code> (como se muestra en la imagen proporcionada).</li>
+                    <li><b>Parámetros personalizados:</b> Si Manus AI requiere parámetros personalizados adicionales, ingréselos aquí según sus especificaciones.</li>
+                </ul>
+            </li>
+            <li><b>Registre la solicitud:</b> Una vez que todos los campos obligatorios estén completos, haga clic en 'Registrar solicitud'.</li>
+        </ol>
+
+        <h2>4. Especificaciones Técnicas</h2>
+        <p>La integración de Manus AI con Blackboard se basa en el estándar LTI 1.3 (Learning Tools Interoperability 1.3), que es la versión más reciente y segura del protocolo LTI. Esto asegura una comunicación robusta y autenticada entre Blackboard y Manus AI.</p>
+
+        <h3>4.1. Flujo de Autenticación</h3>
+        <p>La autenticación se realiza mediante OAuth 2.0 y MTLS (Mutual Transport Layer Security), lo que garantiza que tanto Blackboard como Manus AI se autentiquen mutuamente antes de intercambiar información. El algoritmo de firma utilizado es RS256, un algoritmo de firma asimétrica que utiliza un par de claves pública/privada para asegurar la integridad y autenticidad de los mensajes LTI.</p>
+
+        <h3>4.2. Intercambio de Datos</h3>
+        <p>Manus AI, como agente de IA general, puede procesar y generar datos de diversos tipos (texto, imagen, audio, video) y coordinar con múltiples herramientas. La integración LTI permitirá el lanzamiento contextual desde Blackboard a Manus AI, facilitando el acceso a las capacidades de IA de Manus AI dentro del entorno de aprendizaje.</p>
+
+        <h3>4.3. Consideraciones de Seguridad</h3>
+        <ul>
+            <li><b>Cifrado de Datos:</b> Manus AI utiliza AES-256 y rotación de claves cuántica-segura para el cifrado de datos, lo que proporciona un alto nivel de seguridad para la información intercambiada.</li>
+            <li><b>Cumplimiento:</b> Manus AI ofrece modos de cumplimiento GDPR/HIPAA, lo que es crucial para entornos educativos que manejan datos sensibles de estudiantes.</li>
+            <li><b>Manejo de Errores:</b> La API de Manus AI incluye inteligencia para el manejo de errores, lo que puede ayudar a diagnosticar y mitigar problemas durante la integración y el uso.</li>
+        </ul>
+
+        <h2>5. Conclusión</h2>
+        <p>La integración de Manus AI en Blackboard a través de LTI 1.3 ofrece una oportunidad para enriquecer la experiencia educativa con capacidades avanzadas de inteligencia artificial. Siguiendo los pasos y proporcionando la información correcta de Manus AI, los administradores pueden habilitar esta poderosa herramienta para sus usuarios de Blackboard.</p>
+        <p>Para cualquier problema o consulta adicional, se recomienda consultar la documentación oficial de Manus AI y el soporte de Blackboard.</p>
+    </div>
+</body>
+</html>
